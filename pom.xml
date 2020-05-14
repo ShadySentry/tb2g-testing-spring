@@ -21,7 +21,7 @@
 
         <!-- Spring -->
         <spring-framework.version>5.1.4.RELEASE</spring-framework.version>
-        <spring-data-jdbc.version>2.0.0.M1</spring-data-jdbc.version>
+        <spring-data-jdbc.version>2.0.0.RELEASE</spring-data-jdbc.version>
 
         <!-- Web dependencies -->
         <!-- Version update should also be done in wro.xml, petclinic.less and static resources: htmlHeader.tag and footer.tag-->
@@ -33,6 +33,7 @@
         <!-- Java EE / Java SE dependencies -->
         <tomcat.version>9.0.14</tomcat.version>
         <jaxb.version>2.3.0</jaxb.version>
+        <jaxb-core.version>2.3.0.1</jaxb-core.version>
         <activation.version>1.1.1</activation.version>
         <servlet-api.version>4.0.1</servlet-api.version>
         <javax-jstl.version>1.2.2</javax-jstl.version>
@@ -41,7 +42,7 @@
         <!-- Persistence -->
         <spring-data-releasetrain.version>Lovelace-RELEASE</spring-data-releasetrain.version>
         <hibernate.version>5.4.1.Final</hibernate.version>
-        <hibernate-validator.version>6.0.14.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.0.16.Final</hibernate-validator.version>
         <hsqldb.version>2.4.1</hsqldb.version>
 
         <!-- Logging -->
@@ -54,6 +55,7 @@
         <mockito.version>2.23.4</mockito.version>
         <hamcrest.version>1.3</hamcrest.version>
         <junit-jupiter.version>5.3.2</junit-jupiter.version>
+        <junit-jupiter-engine></junit-jupiter-engine>
 
         <!-- Others -->
         <jackson.version>2.9.8</jackson.version>
@@ -127,10 +129,24 @@
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jdbc -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jdbc</artifactId>
+            <version>${spring-data-jdbc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <!--  because Spring Data usually comes with a slightly older version of Spring -->
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jdbc-core</artifactId>
-            <version>${spring-data-jdbc.version}</version>
+            <version>1.2.1.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -222,12 +238,12 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
-            <version>${jaxb.version}</version>
+            <version>${jaxb-core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>${jaxb.version}</version>
+            <version>${jaxb-core.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
@@ -267,7 +283,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter.version}</version>
+            <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -296,7 +312,7 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest.version}</version>
+            <version>1.3</version>
             <scope>test</scope>
         </dependency>
 
