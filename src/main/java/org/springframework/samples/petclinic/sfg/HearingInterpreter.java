@@ -4,14 +4,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HearingInterpreter {
-    private final WordProduces wordProduces;
+    private final WordProducer wordProducer;
 
-    public HearingInterpreter(WordProduces wordProduces) {
-        this.wordProduces = wordProduces;
+    public HearingInterpreter(WordProducer wordProducer) {
+        this.wordProducer = wordProducer;
     }
 
-    public String WhatIHeard(){
-        String word = wordProduces.getWord();
+    public String whatIHeard(){
+        String word = wordProducer.getWord();
 
         System.out.println(word);
         return word;

@@ -1,5 +1,5 @@
 package org.springframework.samples.petclinic.sfg;
 
-public interface WordProduces {
+public interface WordProducer {
     String getWord();
 }
