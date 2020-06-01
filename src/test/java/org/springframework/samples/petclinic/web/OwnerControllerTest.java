@@ -21,6 +21,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.reset;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,6 +54,54 @@ class OwnerControllerTest {
     @AfterEach
     void tearDown() {
         reset(clinicService);
+    }
+
+    @Test
+    void testNewOwnerPostValid() throws Exception {
+        mockMvc.perform(post("/owners/new")
+            .param("firstName","Jimmy")
+            .param("lastName","Buffet")
+            .param("Address","Rabocha st 3")
+            .param("city","Dnipro")
+            .param("telephone","3151231234"))
+        .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void testNewOwnerPostNotValid() throws Exception {
+        mockMvc.perform(post("/owners/new")
+                .param("firstName","Jimmy")
+                .param("lastName","Buffet")
+                .param("city","Dnipro"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeHasErrors("owner"))
+            .andExpect(model().attributeHasFieldErrors("owner","address"))
+            .andExpect(model().attributeHasFieldErrors("owner","telephone"))
+            .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM));
+    }
+
+    @Test
+    void testUpdateOwnerValid() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/edit",1)
+                .param("firstName","Jimmy")
+                .param("lastName","Buffet")
+                .param("Address","Rabocha st 3")
+                .param("city","Dnipro")
+                .param("telephone","3151231234"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/owners/{ownerId}"));
+    }
+    @Test
+    void testUpdateOwnerNotValid() throws Exception {
+        mockMvc.perform(post("/owners/{ownerId}/edit",1)
+                .param("firstName","Jimmy")
+                .param("lastName","Buffet")
+                .param("city","Dnipro"))
+            .andExpect(status().isOk())
+            .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM))
+        .andExpect(model().attributeHasErrors("owner"))
+        .andExpect(model().attributeHasFieldErrors("owner","address"))
+        .andExpect(model().attributeHasFieldErrors("owner","telephone"));
     }
 
     @Test
@@ -105,6 +154,6 @@ class OwnerControllerTest {
         mockMvc.perform(get("/owners/new"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("owner"))
-                .andExpect(view().name("owners/createOrUpdateOwnerForm"));
+                .andExpect(view().name(OwnerController.VIEWS_OWNER_CREATE_OR_UPDATE_FORM));
     }
 }
